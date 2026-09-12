@@ -36,18 +36,26 @@ jobs:
         if: github.ref_name == 'main'
         run: |
           SHA=$(git rev-parse --short HEAD)
-          for i in $(seq 1 12); do
-            LIVE=$(curl -s --max-time 15 https://mrrdock.simoneruggiero.com/version.txt | awk '{print $1}')
-            [ "$LIVE" = "$SHA" ] && break
-            echo "version.txt live=$LIVE atteso=$SHA, attendo..."; sleep 10
+          SITE=https://mrrdock.simoneruggiero.com
+          # Il certificato di un dominio custom appena aggiunto puo' restare
+          # "initializing" per qualche minuto: qui si ritenta, invece di
+          # dichiarare rotta una produzione che sta solo finendo di salire.
+          for i in $(seq 1 18); do
+            HOME_HTML=$(curl -s --max-time 15 "$SITE/" || true)
+            LIVE=$(curl -s --max-time 15 "$SITE/version.txt" | awk '{print $1}' || true)
+            if [ "$LIVE" = "$SHA" ] && printf '%s' "$HOME_HTML" | grep -q 'MRR tracker for the macOS menu bar'; then
+              echo "Produzione OK su $SHA"
+              break
+            fi
+            echo "tentativo $i: version=$LIVE atteso=$SHA, home=$(printf '%s' "$HOME_HTML" | wc -c) byte"
+            sleep 10
           done
           [ "$LIVE" = "$SHA" ] || { echo "::error::la produzione non serve il commit $SHA (live=$LIVE)"; exit 1; }
-          curl -sf -o /dev/null https://mrrdock.simoneruggiero.com/
-          curl -s https://mrrdock.simoneruggiero.com/ | grep -q 'MRR tracker for the macOS menu bar' \
-            || { echo "::error::la home non contiene l'H1 atteso: contenuto non servito"; exit 1; }
-          curl -sf -o /dev/null https://mrrdock.simoneruggiero.com/llms.txt
-          curl -sf -o /dev/null https://mrrdock.simoneruggiero.com/sitemap.xml
-          echo "Produzione OK su $SHA"
+          printf '%s' "$HOME_HTML" | grep -q 'MRR tracker for the macOS menu bar' \
+            || { echo "::error::la home non contiene il claim atteso: contenuto non servito"; exit 1; }
+          curl -sf -o /dev/null "$SITE/llms.txt"
+          curl -sf -o /dev/null "$SITE/sitemap.xml"
+          curl -sf -o /dev/null "$SITE/og.png"
 
       - name: IndexNow
         if: success() && github.ref_name == 'main'
