@@ -1,0 +1,84 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: cf-pages-mrrdock
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v6
+
+      # Il sito è statico: la "build" è solo la versione, per poter
+      # verificare dall'esterno quale commit è davvero in produzione.
+      - name: Scrivi version.txt
+        run: |
+          printf '%s %s\n' "$(git rev-parse --short HEAD)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > public/version.txt
+          cat public/version.txt
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy public --project-name=mrrdock --branch=${{ github.ref_name }}
+
+      - name: Smoke test in produzione
+        if: github.ref_name == 'main'
+        run: |
+          SHA=$(git rev-parse --short HEAD)
+          for i in $(seq 1 12); do
+            LIVE=$(curl -s --max-time 15 https://mrrdock.simoneruggiero.com/version.txt | awk '{print $1}')
+            [ "$LIVE" = "$SHA" ] && break
+            echo "version.txt live=$LIVE atteso=$SHA, attendo..."; sleep 10
+          done
+          [ "$LIVE" = "$SHA" ] || { echo "::error::la produzione non serve il commit $SHA (live=$LIVE)"; exit 1; }
+          curl -sf -o /dev/null https://mrrdock.simoneruggiero.com/
+          curl -s https://mrrdock.simoneruggiero.com/ | grep -q 'MRR tracker for the macOS menu bar' \
+            || { echo "::error::la home non contiene l'H1 atteso: contenuto non servito"; exit 1; }
+          curl -sf -o /dev/null https://mrrdock.simoneruggiero.com/llms.txt
+          curl -sf -o /dev/null https://mrrdock.simoneruggiero.com/sitemap.xml
+          echo "Produzione OK su $SHA"
+
+      - name: IndexNow
+        if: success() && github.ref_name == 'main'
+        run: ./scripts/indexnow-submit.sh || echo "::warning::IndexNow non riuscito"
+
+      - name: Notifica Discord
+        if: always()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          JOB_STATUS: ${{ job.status }}
+          SITE_URL: https://mrrdock.simoneruggiero.com
+          REPO_NAME: ${{ github.event.repository.name }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          ACTOR: ${{ github.actor }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+        run: |
+          [ -z "$DISCORD_WEBHOOK" ] && { echo "DISCORD_WEBHOOK non configurato, skip"; exit 0; }
+          if [ "$JOB_STATUS" = "success" ]; then EMOJI="✅"; COLOR=5210250; else EMOJI="❌"; COLOR=15548997; fi
+          SHA=$(git rev-parse --short HEAD)
+          MSG=$(git log -1 --pretty=%s | head -c 180)
+          PAYLOAD=$(jq -n \
+            --arg title "$EMOJI Deploy $JOB_STATUS — $REPO_NAME" \
+            --arg url "$SITE_URL" \
+            --arg desc "🌐 $SITE_URL
+          🔀 [\`$SHA\`]($COMMIT_URL) $MSG
+          👤 $ACTOR · [logs]($RUN_URL)" \
+            --argjson color "$COLOR" \
+            '{embeds:[{title:$title,url:$url,description:$desc,color:$color,timestamp:(now|todate)}]}')
+          HTTP=$(curl -sS -o /tmp/discord_resp -w "%{http_code}" -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -H "User-Agent: gh-actions-deploy-notify/1.0" \
+            -d "$PAYLOAD")
+          echo "Discord HTTP $HTTP"; cat /tmp/discord_resp
+          [ "$HTTP" = "204" ] || echo "::warning::Notifica Discord fallita (HTTP $HTTP)"

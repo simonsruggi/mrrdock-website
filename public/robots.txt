@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mrrdock.simoneruggiero.com/sitemap.xml

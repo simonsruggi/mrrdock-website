@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MRRDock — MRR tracker for the macOS menu bar (free, open source)</title>
+<meta name="description" content="Free open-source macOS menu bar app that shows your MRR from Stripe, RevenueCat, Paddle, Lemon Squeezy, Polar, Dodo Payments and Gumroad as one total. No account, no server: API keys stay in your Keychain.">
+<link rel="canonical" href="https://mrrdock.simoneruggiero.com/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="icon" href="/icon-256.png" type="image/png">
+<link rel="apple-touch-icon" href="/icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MRRDock">
+<meta property="og:title" content="MRRDock — MRR tracker for the macOS menu bar">
+<meta property="og:description" content="One MRR total from Stripe, RevenueCat, Paddle, Lemon Squeezy, Polar, Dodo and Gumroad, in your menu bar. Free, open source, keys stay in your Keychain.">
+<meta property="og:url" content="https://mrrdock.simoneruggiero.com/">
+<meta property="og:image" content="https://mrrdock.simoneruggiero.com/og.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MRRDock — MRR tracker for the macOS menu bar">
+<meta name="twitter:description" content="One MRR total from Stripe, RevenueCat, Paddle, Lemon Squeezy, Polar, Dodo and Gumroad, in your menu bar. Free and open source.">
+<meta name="twitter:image" content="https://mrrdock.simoneruggiero.com/og.png">
+
+<style>
+:root{
+  --bg:#0b0c0e; --panel:#14161a; --panel-2:#1b1e24; --line:#262a31;
+  --text:#e9ecf1; --muted:#9aa3b0; --accent:#2ea44f; --accent-2:#7dd3a0;
+  --radius:14px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:17px;line-height:1.6;
+  background-image:radial-gradient(900px 420px at 50% -120px,rgba(46,164,79,.16),transparent 70%)}
+.wrap{max-width:960px;margin:0 auto;padding-inline:20px}
+a{color:var(--accent-2);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{line-height:1.2;letter-spacing:-.02em}
+h1{font-size:clamp(2rem,5.4vw,3.1rem);margin:0 0 14px}
+h2{font-size:clamp(1.4rem,3.4vw,1.85rem);margin:0 0 10px}
+h3{font-size:1.05rem;margin:0 0 6px}
+p{margin:0 0 16px}
+section{padding-block:56px;border-top:1px solid var(--line)}
+header.hero{padding-block:72px 56px;text-align:center}
+.lead{font-size:1.14rem;color:var(--muted);max-width:44rem;margin:0 auto 26px}
+.lead strong{color:var(--text);font-weight:600}
+.appicon{width:92px;height:92px;border-radius:21px;margin-bottom:22px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:26px}
+.badge{font-size:.8rem;color:var(--muted);border:1px solid var(--line);background:var(--panel);
+  border-radius:999px;padding:5px 12px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center}
+.btn{display:inline-block;padding:12px 22px;border-radius:11px;font-weight:600;font-size:1rem;
+  background:var(--accent);color:#06130a;border:1px solid #35c05d}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.btn.ghost{background:var(--panel);color:var(--text);border:1px solid var(--line)}
+pre,code{font-family:var(--mono)}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 16px;overflow-x:auto;font-size:.92rem;margin:0 0 16px}
+code{font-size:.93em}
+:not(pre)>code{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:1px 5px}
+.brew{max-width:520px;margin:22px auto 0;text-align:left}
+.shot{width:100%;max-width:380px;margin-inline:auto;height:auto;border-radius:var(--radius);border:1px solid var(--line);display:block}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+.card p{margin:0;color:var(--muted);font-size:.97rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:.94rem;min-width:620px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+.yes{color:var(--accent-2)}
+.no{color:#6b7280}
+details{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;margin-bottom:10px}
+details summary{cursor:pointer;font-weight:600;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"+ ";color:var(--accent-2)}
+details[open] summary::before{content:"− "}
+details p{margin:12px 0 0;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding-block:34px 46px;color:var(--muted);font-size:.92rem;text-align:center}
+.muted{color:var(--muted)}
+.small{font-size:.87rem}
+@media (max-width:640px){
+  body{font-size:16px}
+  section{padding-block:44px}
+  header.hero{padding-block:52px 40px}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <img class="appicon" src="/icon.png" width="92" height="92" alt="MRRDock app icon">
+    <h1>Your MRR in the macOS menu bar</h1>
+    <p class="lead"><strong>MRRDock</strong> reads Stripe, RevenueCat, Paddle, Lemon Squeezy, Polar, Dodo Payments and Gumroad, adds them up, and keeps the total one glance away. Free, open source, and your API keys never leave your Mac.</p>
+    <div class="badges">
+      <span class="badge">macOS 14+</span>
+      <span class="badge">Apple Silicon &amp; Intel</span>
+      <span class="badge">MIT licensed</span>
+      <span class="badge">No account</span>
+      <span class="badge">Signed &amp; notarized</span>
+    </div>
+    <div class="cta">
+      <a class="btn" href="https://github.com/simonsruggi/MRRDock/releases/latest">Download for macOS</a>
+      <a class="btn ghost" href="https://github.com/simonsruggi/MRRDock">Source on GitHub</a>
+    </div>
+    <div class="brew"><pre><code>brew install --cask simonsruggi/tap/mrrdock</code></pre></div>
+  </div>
+</header>
+
+<section id="what">
+  <div class="wrap">
+    <h2>One number instead of four dashboards</h2>
+    <p>If you sell software, your revenue is scattered. The SaaS is on Stripe, the iOS apps report through RevenueCat, the desktop app went through Paddle because of VAT, the templates sit on Lemon Squeezy. Answering “how am I doing this month?” means four logins and a mental sum that ignores the fact three of them bill in dollars.</p>
+    <p>MRRDock does that sum every fifteen minutes and leaves the answer in the menu bar.</p>
+    <img class="shot" src="/screenshots/overview.png" alt="MRRDock menu bar popover showing total MRR, 30-day growth and a trend chart" loading="lazy">
+    <p class="small muted" style="margin-top:10px">Figures in the screenshots are demo data.</p>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <h2>What it does</h2>
+    <div class="grid">
+      <div class="card"><h3>Multi-platform aggregation</h3><p>Seven platforms plus any HTTPS endpoint of your own, in any combination. Two Stripe accounts and three RevenueCat projects add up like anything else.</p></div>
+      <div class="card"><h3>Multi-currency</h3><p>Every source converted into your display currency with live rates. Amounts that can’t be converted are shown separately, never silently dropped.</p></div>
+      <div class="card"><h3>MRR trend</h3><p>24H, 7D, 1Y or a custom range, with the “vs 30 days ago” delta. History is backfilled from your provider’s own MRR series.</p></div>
+      <div class="card"><h3>Seven menu bar modes</h3><p>MRR · MRR + 30-day change · ARR · 28-day revenue · active subscriptions · one source at a time · icon only.</p></div>
+      <div class="card"><h3>Privacy mode</h3><p>Replaces every figure with <code>•••</code> for screen sharing or a café, revealed with one click.</p></div>
+      <div class="card"><h3>Discord &amp; Slack alerts</h3><p>MRR milestones (“just crossed €5,000”) and an optional daily summary at 22:00.</p></div>
+      <div class="card"><h3>Failure tolerant</h3><p>A source that errors keeps its last known figure with a badge instead of dropping the total to zero.</p></div>
+      <div class="card"><h3>Auto-updates</h3><p>Native SwiftUI, universal binary, signed with a Developer ID, notarized by Apple, updated in place through a signed feed.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="platforms">
+  <div class="wrap">
+    <h2>Supported platforms</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Platform</th><th>MRR</th><th>Active subs</th><th>Trials</th><th>28-day revenue</th></tr></thead>
+        <tbody>
+          <tr><td>Stripe</td><td class="yes">✔</td><td class="yes">✔</td><td class="yes">✔</td><td class="muted">optional</td></tr>
+          <tr><td>RevenueCat</td><td class="yes">✔</td><td class="yes">✔</td><td class="yes">✔</td><td class="yes">✔</td></tr>
+          <tr><td>Paddle Billing</td><td class="yes">✔</td><td class="yes">✔</td><td class="yes">✔</td><td class="no">—</td></tr>
+          <tr><td>Lemon Squeezy</td><td class="yes">✔</td><td class="yes">✔</td><td class="yes">✔</td><td class="no">—</td></tr>
+          <tr><td>Polar</td><td class="yes">✔</td><td class="yes">✔</td><td class="no">—</td><td class="yes">✔</td></tr>
+          <tr><td>Dodo Payments</td><td class="yes">✔</td><td class="yes">✔</td><td class="no">—</td><td class="no">—</td></tr>
+          <tr><td>Gumroad</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✔</td></tr>
+          <tr><td>Custom HTTPS endpoint</td><td class="yes">✔</td><td class="yes">✔</td><td class="yes">✔</td><td class="yes">✔</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:16px">Every key is used read-only: MRRDock issues <code>GET</code> requests and nothing else. The custom endpoint is how you cover Superwall, App Store Connect, Google Play or an internal billing table — return a small JSON object and it counts like any other source.</p>
+    <img class="shot" src="/screenshots/by-source.png" alt="MRR split by source: Stripe, RevenueCat, Paddle, Lemon Squeezy and Gumroad, each with its share of the total" loading="lazy">
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="wrap">
+    <h2>Where your data goes: nowhere</h2>
+    <div class="grid">
+      <div class="card"><h3>Keychain, not a config file</h3><p>API keys live in the macOS Keychain, never in the app’s JSON, never in logs.</p></div>
+      <div class="card"><h3>No MRRDock server</h3><p>The app talks to your payment platforms directly. There is nothing in between to trust.</p></div>
+      <div class="card"><h3>No account, no telemetry</h3><p>No login, no analytics, no crash reporting. Nobody, including the author, can see your revenue.</p></div>
+      <div class="card"><h3>Readable before you trust it</h3><p>MIT licensed, no package dependencies, 37 tests. Read the provider code before you paste a Stripe key into it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="alternatives">
+  <div class="wrap">
+    <h2>MRRDock vs the alternatives</h2>
+    <p>Every MRR tracker for the Mac menu bar makes a different trade. Here is where MRRDock sits, so you can pick the right one rather than the first one.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>MRRDock</th><th>CatBar</th><th>IndieBar</th><th>Baremetrics / ChartMogul</th></tr></thead>
+        <tbody>
+          <tr><th>Price</th><td>Free, MIT</td><td>Freemium, Pro subscription</td><td>Paid, one-time</td><td>Paid monthly, per MRR tier</td></tr>
+          <tr><th>Source code</th><td class="yes">Open</td><td class="no">Closed</td><td class="no">Closed</td><td class="no">Closed</td></tr>
+          <tr><th>Platforms read</th><td>Stripe, RevenueCat, Paddle, Lemon Squeezy, Polar, Dodo, Gumroad, custom</td><td>RevenueCat</td><td>Stripe, RevenueCat, GA4</td><td>Stripe, plus whatever the plan includes</td></tr>
+          <tr><th>Several accounts per platform</th><td class="yes">Yes</td><td class="no">—</td><td class="no">—</td><td>Depends on plan</td></tr>
+          <tr><th>Where the data goes</th><td>Nowhere: Mac → platform API</td><td>Mac → RevenueCat API</td><td>Mac → platform APIs</td><td>Your billing data on their servers</td></tr>
+          <tr><th>Cohorts, LTV, churn</th><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">Yes, that’s the point</td></tr>
+          <tr><th>Lives in</th><td>Menu bar</td><td>Menu bar</td><td>Menu bar</td><td>Browser</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:16px">Read it this way: MRRDock is for shipping on more than one platform and wanting one number. CatBar is the more polished single-platform app if RevenueCat is all you use. Baremetrics and ChartMogul are for cohorts, LTV and forecasting — MRRDock answers one question, “what is my MRR right now?”, and deliberately stops there.</p>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2>How the MRR is calculated</h2>
+    <p>For every recurring line item MRRDock knows the price, the interval, the quantity and any percentage discount:</p>
+    <pre><code>monthly = unit_price × quantity × (intervals_per_month ÷ interval_count) × (1 − discount)</code></pre>
+    <p><code>intervals_per_month</code> is <strong>30.4375</strong> for daily, <strong>4.348</strong> for weekly, <strong>1</strong> for monthly and <strong>1/12</strong> for yearly — the average Gregorian month, so twelve monthly plans and one yearly plan reconcile to the cent instead of drifting apart.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Case</th><th>What MRRDock does</th></tr></thead>
+        <tbody>
+          <tr><td>Free trial</td><td>Counted in Trials, contributes 0 to MRR</td></tr>
+          <tr><td>Yearly plan</td><td>Divided by 12</td></tr>
+          <tr><td>Seats / quantity</td><td>Multiplied</td></tr>
+          <tr><td>Percentage coupon</td><td>Applied</td></tr>
+          <tr><td>Fixed-amount coupon</td><td>Not applied — prorating it needs data these APIs don’t return</td></tr>
+          <tr><td>Usage-based / metered price</td><td>Not guessed. Flagged as “could not be priced”, so an understated total is visible</td></tr>
+          <tr><td>ARR</td><td>Exactly MRR × 12, nothing smoothed behind your back</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:16px">The full table, including taxes and past-due handling, is in the <a href="https://github.com/simonsruggi/MRRDock#how-mrr-is-calculated">README</a>.</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>FAQ</h2>
+
+    <details><summary>Is it really free?</summary>
+      <p>Yes. MIT licensed, no paid tier, no limit on the number of sources. If it saves you a browser tab a day, <a href="https://github.com/sponsors/simonsruggi">sponsoring</a> keeps it going.</p></details>
+
+    <details><summary>Does my revenue data leave my Mac?</summary>
+      <p>No. There is no MRRDock server. The app calls your payment platforms directly and stores settings and history in <code>~/Library/Application Support/MRRDock/</code>.</p></details>
+
+    <details><summary>Is giving a desktop app my Stripe key safe?</summary>
+      <p>The key is stored in the macOS Keychain and only sent to Stripe over HTTPS — but you don’t have to give it a full key: create a restricted key limited to reading subscriptions, or use the custom endpoint and keep the real key on your own server.</p></details>
+
+    <details><summary>Is there a free alternative to Baremetrics or ChartMogul?</summary>
+      <p>For the MRR figure itself, yes: MRRDock reads the same subscriptions from the same platforms and costs nothing. For cohort analysis, LTV and churn forecasting, no — those products do work a menu bar popover shouldn’t.</p></details>
+
+    <details><summary>Can it show MRR from several Stripe accounts and RevenueCat projects at once?</summary>
+      <p>Yes, that is the main reason it exists. Add one source per account or project, in any mix, and the menu bar shows the converted total.</p></details>
+
+    <details><summary>Does it support Superwall, App Store Connect or Google Play?</summary>
+      <p>Not as first-class sources yet: Superwall has no public revenue API, and Apple and Google expose downloadable reports rather than a metrics endpoint. All three work through the custom HTTPS endpoint today, and native support is on the roadmap.</p></details>
+
+    <details><summary>Why doesn’t the total match my Stripe dashboard exactly?</summary>
+      <p>Stripe’s dashboard applies its own rules to proration, taxes and fixed-amount coupons. MRRDock states its rules openly, so any difference is explainable rather than mysterious.</p></details>
+
+    <details><summary>Which macOS versions?</summary>
+      <p>macOS 14 Sonoma and later, Apple Silicon and Intel, as one universal binary.</p></details>
+
+    <details><summary>Is there a Windows or Linux version?</summary>
+      <p>No. MRRDock is a native macOS menu bar app written in SwiftUI. The provider code is plain Swift and reusable, but there is no cross-platform build.</p></details>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <h2>Install</h2>
+    <pre><code>brew install --cask simonsruggi/tap/mrrdock</code></pre>
+    <p>Or <a href="https://github.com/simonsruggi/MRRDock/releases/latest">download the zip</a>, unzip and drag the app to <code>/Applications</code>. It is signed with a Developer ID and notarized, so it opens with a double-click. Auto-updates are built in.</p>
+    <p>Prefer to build it yourself?</p>
+    <pre><code>git clone https://github.com/simonsruggi/MRRDock.git
+cd MRRDock
+./build-app.sh</code></pre>
+    <p>No package dependencies — nothing to vendor, nothing to audit but the app itself.</p>
+    <div class="cta" style="justify-content:flex-start;margin-top:22px">
+      <a class="btn" href="https://github.com/simonsruggi/MRRDock/releases/latest">Download for macOS</a>
+      <a class="btn ghost" href="https://github.com/simonsruggi/MRRDock/issues">Report an issue</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>MRRDock is MIT licensed. <a href="https://github.com/simonsruggi/MRRDock">Source and issues on GitHub</a>.</p>
+    <p>Made with ❤️ by <a href="https://simoneruggiero.com?utm_source=MRRDock&amp;utm_medium=footer">Simone Ruggiero</a></p>
+  </div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://mrrdock.simoneruggiero.com/#app",
+      "name": "MRRDock",
+      "description": "Free open-source macOS menu bar app that aggregates MRR from Stripe, RevenueCat, Paddle, Lemon Squeezy, Polar, Dodo Payments, Gumroad and any custom HTTPS endpoint into one total.",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "MRR tracker",
+      "operatingSystem": "macOS 14 or later",
+      "url": "https://mrrdock.simoneruggiero.com/",
+      "downloadUrl": "https://github.com/simonsruggi/MRRDock/releases/latest",
+      "installUrl": "https://github.com/simonsruggi/MRRDock/releases/latest",
+      "softwareHelp": "https://github.com/simonsruggi/MRRDock#readme",
+      "image": "https://mrrdock.simoneruggiero.com/og.png",
+      "screenshot": [
+        "https://mrrdock.simoneruggiero.com/screenshots/overview.png",
+        "https://mrrdock.simoneruggiero.com/screenshots/by-source.png"
+      ],
+      "license": "https://opensource.org/licenses/MIT",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": {
+        "@type": "Person",
+        "name": "Simone Ruggiero",
+        "url": "https://simoneruggiero.com"
+      },
+      "codeRepository": "https://github.com/simonsruggi/MRRDock",
+      "featureList": [
+        "Aggregates MRR across Stripe, RevenueCat, Paddle, Lemon Squeezy, Polar, Dodo Payments and Gumroad",
+        "Multi-currency conversion with live exchange rates",
+        "MRR trend over 24H, 7D, 1Y or a custom range",
+        "Seven menu bar display modes",
+        "Discord and Slack milestone notifications",
+        "API keys stored in the macOS Keychain"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://mrrdock.simoneruggiero.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is MRRDock really free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. MRRDock is MIT licensed with no paid tier and no limit on the number of connected sources." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does my revenue data leave my Mac?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. There is no MRRDock server. The app calls your payment platforms directly and stores settings and history locally, with API keys in the macOS Keychain." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a free alternative to Baremetrics or ChartMogul?",
+          "acceptedAnswer": { "@type": "Answer", "text": "For the MRR figure itself, yes: MRRDock reads the same subscriptions from the same platforms and costs nothing. For cohort analysis, LTV and churn forecasting, no." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can MRRDock show MRR from several Stripe accounts and RevenueCat projects at once?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Add one source per account or project, in any combination, and the menu bar shows the converted total." }
+        },
+        {
+          "@type": "Question",
+          "name": "Which macOS versions does MRRDock support?",
+          "acceptedAnswer": { "@type": "Answer", "text": "macOS 14 Sonoma and later, on Apple Silicon and Intel, as one universal binary." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a Windows or Linux version of MRRDock?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. MRRDock is a native macOS menu bar app written in SwiftUI." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</body>
+</html>

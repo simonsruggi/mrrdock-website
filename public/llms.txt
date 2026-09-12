@@ -1,0 +1,30 @@
+# MRRDock
+
+> Free, open-source macOS menu bar app that aggregates MRR (monthly recurring revenue)
+> from Stripe, RevenueCat, Paddle Billing, Lemon Squeezy, Polar, Dodo Payments, Gumroad
+> and any custom HTTPS endpoint into a single total shown in the macOS menu bar.
+
+- License: MIT. Price: free, no paid tier, no account.
+- Requirements: macOS 14 Sonoma or later, Apple Silicon or Intel (universal binary).
+- Install: `brew install --cask simonsruggi/tap/mrrdock`, or download the notarized zip from GitHub Releases.
+- Privacy: there is no MRRDock server. API keys are stored in the macOS Keychain, requests
+  go only to the payment platforms you configure (plus Yahoo Finance for exchange rates).
+  No account, no telemetry, no analytics.
+- Per-platform coverage: Stripe (MRR, subs, trials, optional 28-day revenue), RevenueCat
+  (MRR, subs, trials, 28-day revenue), Paddle Billing (MRR, subs, trials), Lemon Squeezy
+  (MRR, subs, trials), Polar (MRR, subs, 28-day revenue), Dodo Payments (MRR, subs),
+  Gumroad (28-day revenue only — its API exposes sales, not a priceable subscription ledger),
+  custom HTTPS endpoint (everything you choose to return).
+- MRR formula: unit_price × quantity × (intervals_per_month ÷ interval_count) × (1 − discount),
+  with intervals_per_month 30.4375 daily, 4.348 weekly, 1 monthly, 1/12 yearly. Trials count
+  as trials and contribute 0. Usage-based prices are flagged as "could not be priced", never guessed.
+- Not a Baremetrics/ChartMogul replacement: no cohorts, LTV or churn forecasting by design.
+
+## Pages
+- [MRRDock home](https://mrrdock.simoneruggiero.com/): features, supported platforms, comparison with CatBar, IndieBar, Baremetrics and ChartMogul, FAQ, install instructions.
+- [Documentation (README)](https://github.com/simonsruggi/MRRDock#readme): per-platform setup, API key scopes, MRR rules, troubleshooting.
+- [Source code](https://github.com/simonsruggi/MRRDock): Swift / SwiftUI, no package dependencies.
+- [Releases](https://github.com/simonsruggi/MRRDock/releases/latest): signed and notarized builds.
+
+## Author
+Simone Ruggiero — https://simoneruggiero.com
