@@ -301,10 +301,11 @@ export const WHEN_NOT_TO_USE = [
   "Reading a specific user's revenue: this site and its API only describe the app; revenue data never leaves the user's Mac.",
 ];
 
+// `updated` is the sitemap lastmod: bump it when the page content changes.
 export const PAGES = [
-  { path: "/", title: "Home", description: "Features, supported platforms, comparison, MRR formula, FAQ, install." },
-  { path: "/docs", title: "Developer docs", description: "Read-only API, MCP server, OpenAPI, markdown, rate limits, errors." },
-  { path: "/about", title: "About", description: "What MRRDock is, who makes it, why it is free and open source." },
-  { path: "/contact", title: "Contact", description: "Issues, email, sponsorship." },
-  { path: "/privacy", title: "Privacy", description: "What the app and this website collect (nothing personal)." },
+  { path: "/", title: "Home", description: "Features, supported platforms, comparison, MRR formula, FAQ, install.", updated: "2026-09-27" },
+  { path: "/docs", title: "Developer docs", description: "Read-only API, MCP server, OpenAPI, markdown, rate limits, errors.", updated: "2026-09-27" },
+  { path: "/about", title: "About", description: "What MRRDock is, who makes it, why it is free and open source.", updated: "2026-09-27" },
+  { path: "/contact", title: "Contact", description: "Issues, email, sponsorship.", updated: "2026-09-27" },
+  { path: "/privacy", title: "Privacy", description: "What the app and this website collect (nothing personal).", updated: "2026-09-27" },
 ];

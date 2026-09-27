@@ -307,6 +307,7 @@ outputs["sitemap.xml"] = `<?xml version="1.0" encoding="UTF-8"?>
 ${PAGES.map(
   (p) => `  <url>
     <loc>${SITE_URL}${p.path}</loc>
+    <lastmod>${p.updated}</lastmod>
     <changefreq>${p.path === "/" ? "weekly" : "monthly"}</changefreq>
     <priority>${p.path === "/" ? "1.0" : "0.6"}</priority>
   </url>`

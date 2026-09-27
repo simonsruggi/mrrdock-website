@@ -2,7 +2,7 @@
 // (next()); this adds the API, MCP, generated documents, markdown negotiation,
 // discovery Link headers and markdown 404s.
 import { SITE_URL } from "../data/product.js";
-import { handleApi, json } from "./api.js";
+import { handleApi, json, ENDPOINTS } from "./api.js";
 import { handleMcp, serverCard } from "./mcp.js";
 import { buildOpenApi } from "./openapi.js";
 import { llmsTxt, MARKDOWN_PAGES, notFoundMarkdown } from "./content.js";
@@ -33,6 +33,7 @@ const apiCatalog = () => ({
       "service-desc": [{ href: `${SITE_URL}/openapi.json`, type: "application/vnd.oai.openapi+json;version=3.1" }],
       "service-doc": [{ href: `${SITE_URL}/docs`, type: "text/html" }],
       "service-meta": [{ href: `${SITE_URL}/.well-known/mcp/server-card.json`, type: "application/json" }],
+      item: ENDPOINTS.filter((e) => !e.path.includes("{")).map((e) => ({ href: `${SITE_URL}${e.path}`, type: "application/json" })),
     },
   ],
 });
