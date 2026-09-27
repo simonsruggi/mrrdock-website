@@ -1,3 +1,9 @@
 https://mrrdock.simoneruggiero.com/
+https://mrrdock.simoneruggiero.com/about
+https://mrrdock.simoneruggiero.com/contact
+https://mrrdock.simoneruggiero.com/privacy
+https://mrrdock.simoneruggiero.com/docs
 https://mrrdock.simoneruggiero.com/llms.txt
+https://mrrdock.simoneruggiero.com/openapi.json
+https://mrrdock.simoneruggiero.com/api/v1/info
 https://mrrdock.simoneruggiero.com/sitemap.xml

@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+    <channel>
+        <title>MRRDock</title>
+        <link>https://github.com/simonsruggi/MRRDock</link>
+        <description>MRRDock update feed</description>
+        <language>en</language>
+        <item>
+            <title>Version 1.1.2</title>
+            <pubDate>Sun, 27 Sep 2026 11:50:18 +0200</pubDate>
+            <sparkle:version>4</sparkle:version>
+            <sparkle:shortVersionString>1.1.2</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <description><![CDATA[
+<h3>Fix</h3>
+<ul>
+<li><b>No more double counting</b> — adding the same RevenueCat project twice (for example as <code>1c0213f5</code> and <code>proj1c0213f5</code>) or the same custom endpoint no longer counts its MRR twice. The extra copy is marked <i>Duplicate</i> in Sources.</li>
+</ul>
+            ]]></description>
+            <enclosure url="https://github.com/simonsruggi/MRRDock/releases/download/v1.1.2/MRRDock.zip"
+                       type="application/octet-stream"
+                       sparkle:edSignature="NrwyB964uep57rz+DH1K2i073Hkdv7KJtQasfiBcUkc5GUtVl94AM1k7K0C+z80ExBzXrPZU3HjDJmFcFmWdCg=="
+                       length="2599371"/>
+        </item>
+    </channel>
+</rss>

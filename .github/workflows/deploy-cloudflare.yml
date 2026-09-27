@@ -18,6 +18,15 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # public/ deve coincidere con data/product.js, e API/MCP/markdown devono
+      # rispondere come dichiarato in llms.txt e openapi.json.
+      - name: Coerenza dati e test
+        run: npm run check
+
       # Il sito è statico: la "build" è solo la versione, per poter
       # verificare dall'esterno quale commit è davvero in produzione.
       - name: Scrivi version.txt
@@ -56,6 +65,16 @@ jobs:
           curl -sf -o /dev/null "$SITE/llms.txt"
           curl -sf -o /dev/null "$SITE/sitemap.xml"
           curl -sf -o /dev/null "$SITE/og.png"
+          for p in /about /contact /privacy /docs; do curl -sf -o /dev/null "$SITE$p"; done
+          curl -sf "$SITE/api/v1/info" | jq -e '.name == "MRRDock"' >/dev/null
+          curl -sf "$SITE/openapi.json" | jq -e '.openapi' >/dev/null
+          curl -sf "$SITE/.well-known/mcp/server-card.json" | jq -e '.transport.endpoint' >/dev/null
+          curl -sf -X POST "$SITE/mcp" -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
+            -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | jq -e '.result.tools | length > 0' >/dev/null
+          CODE=$(curl -s -o /dev/null -w '%{http_code}' "$SITE/this-page-does-not-exist")
+          [ "$CODE" = "404" ] || { echo "::error::soft-404: $CODE"; exit 1; }
+          curl -sI -H 'Accept: text/markdown' "$SITE/" | grep -qi '^content-type: text/markdown' \
+            || { echo "::error::negoziazione markdown della home rotta"; exit 1; }
 
       - name: IndexNow
         if: success() && github.ref_name == 'main'
