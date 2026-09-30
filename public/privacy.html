@@ -98,15 +98,15 @@ footer{border-top:1px solid var(--line);padding-block:34px 46px;color:var(--mute
 <header class="wrap topnav"><a class="brand" href="/">MRRDock</a><a href="/docs">Developer docs</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a></header>
 <main class="wrap page">
 <h1>Privacy</h1>
-<p>This page covers the MRRDock app and this website. Short version: neither collects personal data, and nobody — including the developer — can see your revenue.</p>
+<p>This page covers the MRRDock app and this website. Short version: the app collects no personal data, this website only counts visits, and nobody — including the developer — can see your revenue.</p>
 <h2 id="the-app">The app</h2>
 <ul><li>None. There is no MRRDock server: the app calls the payment platforms directly.</li><li>API keys are stored in the macOS Keychain, never in the app's JSON file or in logs.</li><li>Settings and MRR history are stored in ~/Library/Application Support/MRRDock/.</li><li>The app contacts only the platforms you configure, Yahoo Finance for exchange rates, and the update feed on GitHub.</li><li>No account, no analytics, no crash reporting.</li><li>Every key is used read-only: MRRDock issues GET requests and nothing else.</li><li>Exchange rates are fetched from Yahoo Finance with currency codes only: no amount and no identifier is sent.</li><li>Update checks download the public update feed from GitHub. GitHub sees the request like any other download; the app adds no identifier.</li><li>Optional Discord and Slack alerts are sent from your Mac to the webhook URL you enter, and only there.</li></ul>
 <p>To delete everything, quit the app, delete it from /Applications, remove ~/Library/Application Support/MRRDock/ and the <code>com.simone.mrrdock</code> items from Keychain Access.</p>
 <h2 id="this-website">This website</h2>
-<ul><li>No cookies, no analytics scripts, no trackers, no forms.</li><li>The site is served by Cloudflare, which processes technical request data (such as IP address and user agent) to deliver the pages and protect against abuse, under its own privacy policy.</li><li>The public API and MCP server keep a per-IP request counter in memory for rate limiting (60 requests per 60 seconds); it is not stored or logged by this site.</li></ul>
+<ul><li>We count visits with <a href="https://pure-analytics.com">PureAnalytics</a>. On your first visit a banner asks for consent, and nothing is tracked until you choose.</li><li>If you accept, the site stores two first-party cookies, <code>ea_visitor_id</code> (a random ID, 12 months) and <code>ea_session_id</code> (30 minutes), to recognise later visits from the same browser. Your choice is kept in your browser's localStorage (<code>ea_consent</code>).</li><li>If you decline (or click outside the banner), no cookie is stored and the visit is counted anonymously with an ID that changes every day.</li><li>The IP address is stored without its last octet, the data is not used for advertising or shared with third parties, there is no cross-site tracking, and Do Not Track is respected. To change your choice, clear this site's data in your browser.</li><li>No other cookies, no ads, no forms.</li><li>The site is served by Cloudflare, which processes technical request data (such as IP address and user agent) to deliver the pages and protect against abuse, under its own privacy policy.</li><li>The public API and MCP server keep a per-IP request counter in memory for rate limiting (60 requests per 60 seconds); it is not stored or logged by this site.</li></ul>
 <h2 id="contact">Contact</h2>
 <p>Questions about privacy: <a href="mailto:simone.ruggiero97@gmail.com">simone.ruggiero97@gmail.com</a>. Data controller: Simone Ruggiero, Naples, Italy.</p>
-<p>Last updated: 27 September 2026.</p>
+<p>Last updated: 30 September 2026.</p>
 </main>
 <footer>
   <div class="wrap">
@@ -152,5 +152,6 @@ footer{border-top:1px solid var(--line);padding-block:34px 46px;color:var(--mute
   ]
 }
 </script>
+<script defer data-ea-website-id="mrrdk8q3v2x7n" data-ea-domain="mrrdock.simoneruggiero.com" data-ea-track-accuracy="most accurate" data-ea-privacy-url="/privacy" src="https://pure-analytics.com/tracking/utilities/script.js"></script>
 </body>
 </html>

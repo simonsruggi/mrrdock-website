@@ -149,7 +149,7 @@ export function privacyMarkdown() {
   return [
     "# Privacy",
     "",
-    `This page covers the ${P.name} app and this website. Short version: neither collects personal data, and nobody — including the developer — can see your revenue.`,
+    `This page covers the ${P.name} app and this website. Short version: the app collects no personal data, this website only counts visits, and nobody — including the developer — can see your revenue.`,
     "",
     "## The app",
     "",
@@ -162,7 +162,11 @@ export function privacyMarkdown() {
     "",
     "## This website",
     "",
-    "- No cookies, no analytics scripts, no trackers, no forms.",
+    "- We count visits with [PureAnalytics](https://pure-analytics.com). On your first visit a banner asks for consent, and nothing is tracked until you choose.",
+    "- If you accept, the site stores two first-party cookies, `ea_visitor_id` (a random ID, 12 months) and `ea_session_id` (30 minutes), to recognise later visits from the same browser. Your choice is kept in your browser's localStorage (`ea_consent`).",
+    "- If you decline (or click outside the banner), no cookie is stored and the visit is counted anonymously with an ID that changes every day.",
+    "- The IP address is stored without its last octet, the data is not used for advertising or shared with third parties, there is no cross-site tracking, and Do Not Track is respected. To change your choice, clear this site's data in your browser.",
+    "- No other cookies, no ads, no forms.",
     "- The site is served by Cloudflare, which processes technical request data (such as IP address and user agent) to deliver the pages and protect against abuse, under its own privacy policy.",
     `- The public API and MCP server keep a per-IP request counter in memory for rate limiting (${RATE_LIMIT.limit} requests per ${RATE_LIMIT.windowSeconds} seconds); it is not stored or logged by this site.`,
     "",
@@ -170,7 +174,7 @@ export function privacyMarkdown() {
     "",
     `Questions about privacy: [${P.author.email}](mailto:${P.author.email}). Data controller: ${P.author.name}, ${P.author.location}.`,
     "",
-    "Last updated: 27 September 2026.",
+    "Last updated: 30 September 2026.",
     "",
   ].join("\n");
 }

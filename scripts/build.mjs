@@ -90,6 +90,9 @@ export function mdToHtml(md) {
 // ---------- shared blocks ----------
 const NAV = PAGES.filter((p) => p.path !== "/");
 
+// Same snippet as the hand-written public/index.html.
+const ANALYTICS = `<script defer data-ea-website-id="mrrdk8q3v2x7n" data-ea-domain="mrrdock.simoneruggiero.com" data-ea-track-accuracy="most accurate" data-ea-privacy-url="/privacy" src="https://pure-analytics.com/tracking/utilities/script.js"></script>`;
+
 function footer() {
   return [
     "<footer>",
@@ -269,6 +272,7 @@ ${mdToHtml(md)}
 </main>
 ${footer()}
 ${status404 ? "" : jsonLdTag(pageJsonLd(page, type))}
+${ANALYTICS}
 </body>
 </html>
 `;
