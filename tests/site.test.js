@@ -186,3 +186,16 @@ test("old privacy URLs redirect permanently to /privacy-policy", () => {
   }
   assert.doesNotMatch(rules, /\s404\s*$/m, "a 404 line makes Pages drop the whole file");
 });
+
+test("/privacy-policy is website-only; every page links the app policy on app-policies", () => {
+  const read = (f) => readFileSync(new URL(`../public/${f}`, import.meta.url), "utf8");
+  const appPolicy = "https://simonsruggi.github.io/app-policies/mrrdock/PRIVACY";
+  assert.equal(PRODUCT.links.appPrivacy, appPolicy);
+  for (const f of ["index.html", "about.html", "contact.html", "privacy-policy.html", "docs.html", "404.html"]) {
+    const html = read(f);
+    assert.ok(html.includes(`<a href="${appPolicy}">App Privacy</a>`), `${f}: App Privacy link`);
+    assert.ok(html.includes('<a href="/privacy-policy">Privacy</a>'), `${f}: website Privacy link`);
+  }
+  const main = read("privacy-policy.html").match(/<main[\s\S]*?<\/main>/)[0];
+  assert.doesNotMatch(main, /Keychain|Application Support/, "app facts belong to the app policy");
+});

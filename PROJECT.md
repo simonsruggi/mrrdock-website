@@ -24,6 +24,12 @@ del repo GitHub.
   corrente non è scritta da nessuna parte**: `/api/v1/release` legge in tempo reale
   l'`appcast.xml` Sparkle dell'app (cache 15 min), cioè esattamente ciò che l'app offre come
   aggiornamento. Se il feed non risponde: `release` → 503 problem+json, `info` → `latestRelease: null`.
+- **Due privacy distinte.** `/privacy-policy` copre solo il sito (PureAnalytics con consenso,
+  Cloudflare, rate limit API). La privacy dell'**app** sta in
+  `https://simonsruggi.github.io/app-policies/mrrdock/PRIVACY` (repo `~/ios-apps/app-policies`,
+  fonte unica per tutte le app), linkata come "App Privacy" nel footer da `PRODUCT.links.appPrivacy`.
+  I vecchi `/privacy`, `/privacy/`, `/privacy.html` fanno 301 su `/privacy-policy` via `public/_redirects`
+  (l'app non linka nessun URL privacy del sito).
 - **Sottodominio di `simoneruggiero.com`** invece di un dominio nuovo: gratis e immediato.
   `mrrdock.app` era libero al 12/09/2026 — il README spiega come spostarsi.
 - **Cloudflare Pages** (progetto `mrrdock`), deploy via push, come tutti gli altri siti.

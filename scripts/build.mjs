@@ -99,7 +99,7 @@ function footer() {
     '  <div class="wrap">',
     `    <nav class="footnav" aria-label="Site">${[{ path: "/", title: "Home" }, ...NAV]
       .map((p) => `<a href="${p.path}">${esc(p.title)}</a>`)
-      .join(" · ")} · <a href="/llms.txt">llms.txt</a> · <a href="/openapi.json">API</a></nav>`,
+      .join(" · ")} · <a href="${P.links.appPrivacy}">App Privacy</a> · <a href="/llms.txt">llms.txt</a> · <a href="/openapi.json">API</a></nav>`,
     `    <p>${esc(P.name)} is ${esc(P.license.id)} licensed. <a href="${P.links.repository}">Source and issues on GitHub</a>.</p>`,
     `    <p>Made with ❤️ by <a href="https://simoneruggiero.com?utm_source=MRRDock&amp;utm_medium=footer">Simone Ruggiero</a></p>`,
     "  </div>",

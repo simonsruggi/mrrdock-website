@@ -46,6 +46,9 @@ export const PRODUCT = {
     issues: `${REPO}/issues`,
     changelog: `${REPO}/blob/main/CHANGELOG.md`,
     sponsor: "https://github.com/sponsors/simonsruggi",
+    // The app's privacy policy lives in the app-policies repo (single source for every app);
+    // /privacy-policy on this site covers only the website.
+    appPrivacy: "https://simonsruggi.github.io/app-policies/mrrdock/PRIVACY",
     homebrewTap: "https://github.com/simonsruggi/homebrew-tap",
     launchPost:
       "https://medium.com/@simonsruggi/i-built-a-free-macos-menu-bar-app-that-shows-my-mrr-across-every-payment-platform-78997b76a2f3",
@@ -307,5 +310,5 @@ export const PAGES = [
   { path: "/docs", title: "Developer docs", description: "Read-only API, MCP server, OpenAPI, markdown, rate limits, errors.", updated: "2026-09-27" },
   { path: "/about", title: "About", description: "What MRRDock is, who makes it, why it is free and open source.", updated: "2026-09-27" },
   { path: "/contact", title: "Contact", description: "Issues, email, sponsorship.", updated: "2026-09-27" },
-  { path: "/privacy-policy", title: "Privacy", description: "What the app and this website collect (nothing personal).", updated: "2026-09-27" },
+  { path: "/privacy-policy", title: "Privacy", description: "What this website collects: consent-based visit counts, nothing personal.", updated: "2026-09-30" },
 ];
