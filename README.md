@@ -38,7 +38,7 @@ data/product.js     THE source of truth: every fact about the app lives here
 src/                router, API, MCP, OpenAPI, markdown/llms.txt (all read data/product.js)
 functions/          Pages middleware, just calls src/router.js
 public/index.html   the home (hand-written; <!-- gen:* --> blocks are generated)
-public/{about,contact,privacy,docs,404}.html, sitemap.xml   generated, don't edit
+public/{about,contact,privacy-policy,docs,404}.html, sitemap.xml   generated, don't edit
 public/og.png       1280×640 social preview, generated with scripts/make-og.py
 public/<uuid>.txt   IndexNow key
 scripts/build.mjs   regenerates public/ from data/product.js (--check in CI)

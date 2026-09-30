@@ -1,5 +1,5 @@
 // Markdown for every page, built from data/product.js. The same text becomes
-// the HTML of /about, /contact, /privacy and /docs (scripts/build.mjs) and is
+// the HTML of /about, /contact, /privacy-policy and /docs (scripts/build.mjs) and is
 // what `Accept: text/markdown` returns, so the two versions cannot drift.
 import {
   SITE_URL, PRODUCT, PLATFORMS, FEATURES, MRR_FORMULA, ALTERNATIVES, FAQ,
@@ -322,6 +322,6 @@ export const MARKDOWN_PAGES = {
   "/": homeMarkdown,
   "/about": aboutMarkdown,
   "/contact": contactMarkdown,
-  "/privacy": privacyMarkdown,
+  "/privacy-policy": privacyMarkdown,
   "/docs": docsMarkdown,
 };

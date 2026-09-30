@@ -17,7 +17,7 @@ del repo GitHub.
   ogni pagina con `Vary: Accept`, header `Link` (RFC 8288) sull'HTML, 404 markdown. Nessuna
   auth/OAuth: il sito non ha account e non la simula. I 404 veri vengono da `public/404.html`
   (senza, Pages fa fallback SPA sulla home: era il soft-404 segnalato da is-agentic).
-- **Fonte unica dei dati: `data/product.js`.** Pagine about/contact/privacy/docs/404, sitemap,
+- **Fonte unica dei dati: `data/product.js`.** Pagine about/contact/privacy-policy/docs/404, sitemap,
   blocchi `<!-- gen:* -->` della home (funzionalità, tabella piattaforme, FAQ, footer, JSON-LD
   con `sameAs`), API, MCP, openapi, llms.txt e markdown leggono da lì. `node scripts/build.mjs`
   rigenera `public/`, `--check` in CI fa fallire il deploy se è disallineato. La **versione

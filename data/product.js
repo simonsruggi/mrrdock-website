@@ -307,5 +307,5 @@ export const PAGES = [
   { path: "/docs", title: "Developer docs", description: "Read-only API, MCP server, OpenAPI, markdown, rate limits, errors.", updated: "2026-09-27" },
   { path: "/about", title: "About", description: "What MRRDock is, who makes it, why it is free and open source.", updated: "2026-09-27" },
   { path: "/contact", title: "Contact", description: "Issues, email, sponsorship.", updated: "2026-09-27" },
-  { path: "/privacy", title: "Privacy", description: "What the app and this website collect (nothing personal).", updated: "2026-09-27" },
+  { path: "/privacy-policy", title: "Privacy", description: "What the app and this website collect (nothing personal).", updated: "2026-09-27" },
 ];

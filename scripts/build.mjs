@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Regenerates everything in public/ that comes from data/product.js:
-// the marked blocks of index.html, about/contact/privacy/docs/404 pages,
+// the marked blocks of index.html, about/contact/privacy-policy/docs/404 pages,
 // sitemap.xml. `--check` writes nothing and fails if a file is out of date
 // (run by CI before deploying).
 import { readFileSync, writeFileSync } from "node:fs";
@@ -91,7 +91,7 @@ export function mdToHtml(md) {
 const NAV = PAGES.filter((p) => p.path !== "/");
 
 // Same snippet as the hand-written public/index.html.
-const ANALYTICS = `<script defer data-ea-website-id="mrrdk8q3v2x7n" data-ea-domain="mrrdock.simoneruggiero.com" data-ea-track-accuracy="most accurate" data-ea-privacy-url="/privacy" src="https://pure-analytics.com/tracking/utilities/script.js"></script>`;
+const ANALYTICS = `<script defer data-ea-website-id="mrrdk8q3v2x7n" data-ea-domain="mrrdock.simoneruggiero.com" data-ea-track-accuracy="most accurate" src="https://pure-analytics.com/tracking/utilities/script.js"></script>`;
 
 function footer() {
   return [
@@ -290,7 +290,7 @@ outputs["index.html"] = homeOut;
 const byPath = Object.fromEntries(PAGES.map((p) => [p.path, p]));
 outputs["about.html"] = subPage(byPath["/about"], aboutMarkdown(), "AboutPage");
 outputs["contact.html"] = subPage(byPath["/contact"], contactMarkdown(), "ContactPage");
-outputs["privacy.html"] = subPage(byPath["/privacy"], privacyMarkdown(), "WebPage");
+outputs["privacy-policy.html"] = subPage(byPath["/privacy-policy"], privacyMarkdown(), "WebPage");
 outputs["docs.html"] = subPage(byPath["/docs"], docsMarkdown(), "TechArticle");
 outputs["404.html"] = subPage(
   { path: "/404", title: "Page not found", description: `This page does not exist on the ${P.name} website.` },

@@ -140,7 +140,7 @@ test("MCP: initialize, tools/list, tools/call, errors", async () => {
 });
 
 test("markdown negotiation on pages, Vary and Link on HTML", async () => {
-  for (const path of ["/", "/about", "/contact", "/privacy", "/docs"]) {
+  for (const path of ["/", "/about", "/contact", "/privacy-policy", "/docs"]) {
     const res = await get(path, { headers: { accept: "text/markdown" } });
     assert.equal(res.status, 200, path);
     assert.match(res.headers.get("content-type"), /^text\/markdown/);
@@ -173,8 +173,16 @@ test("static pages carry facts from data/product.js", () => {
   const ld = JSON.parse(home.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
   const app = ld["@graph"].find((n) => n["@type"] === "SoftwareApplication");
   assert.ok(app.sameAs.includes(PRODUCT.links.repository));
-  for (const f of ["about.html", "contact.html", "privacy.html"]) {
+  for (const f of ["about.html", "contact.html", "privacy-policy.html"]) {
     const textLen = read(f).replace(/<style>[\s\S]*?<\/style>|<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").length;
     assert.ok(textLen > 1000, `${f} too short (${textLen})`);
   }
+});
+
+test("old privacy URLs redirect permanently to /privacy-policy", () => {
+  const rules = readFileSync(new URL("../public/_redirects", import.meta.url), "utf8");
+  for (const from of ["/privacy", "/privacy/", "/privacy.html"]) {
+    assert.ok(rules.split("\n").includes(`${from} /privacy-policy 301`), from);
+  }
+  assert.doesNotMatch(rules, /\s404\s*$/m, "a 404 line makes Pages drop the whole file");
 });

@@ -65,7 +65,7 @@ jobs:
           curl -sf -o /dev/null "$SITE/llms.txt"
           curl -sf -o /dev/null "$SITE/sitemap.xml"
           curl -sf -o /dev/null "$SITE/og.png"
-          for p in /about /contact /privacy /docs; do curl -sf -o /dev/null "$SITE$p"; done
+          for p in /about /contact /privacy-policy /docs; do curl -sf -o /dev/null "$SITE$p"; done
           curl -sf "$SITE/api/v1/info" | jq -e '.name == "MRRDock"' >/dev/null
           curl -sf "$SITE/openapi.json" | jq -e '.openapi' >/dev/null
           curl -sf "$SITE/.well-known/mcp/server-card.json" | jq -e '.transport.endpoint' >/dev/null
