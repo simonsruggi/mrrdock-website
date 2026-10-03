@@ -154,7 +154,7 @@ export function privacyMarkdown() {
     "",
     "## What this website collects",
     "",
-    "- We count visits with [PureAnalytics](https://pure-analytics.com). On your first visit a banner asks for consent, and nothing is tracked until you choose.",
+    "- We count visits with [PureAnalytics](https://pure-analytics.com). On your first visit a banner asks for consent to cookies: until you choose, or if you decline, the visit is counted anonymously, without cookies.",
     "- If you accept, the site stores two first-party cookies, `ea_visitor_id` (a random ID, 12 months) and `ea_session_id` (30 minutes), to recognise later visits from the same browser. Your choice is kept in your browser's localStorage (`ea_consent`).",
     "- If you decline (or click outside the banner), no cookie is stored and the visit is counted anonymously with an ID that changes every day.",
     "- The IP address is stored without its last octet, the data is not used for advertising or shared with third parties, there is no cross-site tracking, and Do Not Track is respected. To change your choice, clear this site's data in your browser.",
