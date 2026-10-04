@@ -90,15 +90,20 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           ACTOR: ${{ github.actor }}
           COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
         run: |
           [ -z "$DISCORD_WEBHOOK" ] && { echo "DISCORD_WEBHOOK non configurato, skip"; exit 0; }
           if [ "$JOB_STATUS" = "success" ]; then EMOJI="✅"; COLOR=5210250; else EMOJI="❌"; COLOR=15548997; fi
           SHA=$(git rev-parse --short HEAD)
           MSG=$(git log -1 --pretty=%s | head -c 180)
+          PAGES=$(node scripts/changed-urls.mjs "$BEFORE_SHA" HEAD 2>/dev/null | head -c 1200)
+          [ -n "$PAGES" ] && PAGES="
+          $PAGES"
           PAYLOAD=$(jq -n \
             --arg title "$EMOJI Deploy $JOB_STATUS — $REPO_NAME" \
             --arg url "$SITE_URL" \
-            --arg desc "🌐 $SITE_URL
+            --arg desc "🌐 $SITE_URL$PAGES
           🔀 [\`$SHA\`]($COMMIT_URL) $MSG
           👤 $ACTOR · [logs]($RUN_URL)" \
             --argjson color "$COLOR" \
